@@ -10,9 +10,10 @@
 #ifndef MYTIMER_H_
 #define MYTIMER_H_
 
-void initTimer(unsigned int timer, unsigned int preScaler, unsigned int count);
+void initTimer(unsigned int timer, unsigned int preScaler, unsigned int count, bool boolean);
 bool timer0Expired(void);
 bool timer1Expired(void);
+
 
 // These are easy-to-use aliases for the arguments used by the timer configuration and use functions.
 #define TIMER0              TIMER32_0_BASE
