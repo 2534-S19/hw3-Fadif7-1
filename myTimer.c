@@ -18,13 +18,11 @@ void initTimer(unsigned int timer, unsigned int preScaler, unsigned int count, b
 
     // For the specified timer, pass the count value.
 
-    Timer32_setCount(timer, 3000000);
-    if(booleanForRepeat){
-        Timer32_startTimer(timer, false);
-    }
+    Timer32_setCount(timer, count);
+
 
     // For the specified timer, configure the timer to repeat once it elapses.
-//    Timer32_startTimer(timer, false);
+    Timer32_startTimer(timer, false);
 
 
 }
