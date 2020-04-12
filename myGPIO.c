@@ -121,8 +121,8 @@ void initGPIO()
 
 
     // Turn off all LEDs at the start.
-     changeLaunchpadLED2(0);
-     changeBoosterpackLED(0);
+//     changeLaunchpadLED2(0);
+//     changeBoosterpackLED(0);
 }
 
 // TODO: Create a function to return the status of Launchpad Pushbutton S1

@@ -3,7 +3,7 @@
  #include "myGPIO.h"
  #include "myTimer.h"
 #include <stdio.h>
-
+typedef enum{off, two, three, four, five, six, seven, eight}color;
  int main(void)
  {
      // Count variables to control the LEDs.
@@ -57,8 +57,9 @@
              if(checkStatus_BoosterpackS1() == PRESSED)
              {
                 buttonHistoryS1 = buttonHistoryS1 << 1;
-                buttonHistoryS1 |= checkStatus_BoosterpackS1();
-             }
+                buttonHistoryS1 |= BIT0;
+             }else
+                 buttonHistoryS1 = buttonHistoryS1 << 1;
 
 
          // TODO: Call the button state machine function to check for a completed, debounced button press.
@@ -68,49 +69,22 @@
         bool pressed = fsmBoosterpackButtonS1(buttonHistoryS1);
 
 
-//        printf("This is the currentS1 val: %d \n", currentS1);
-//
-//        if (currentS1 == up_state)
-//        {
-//            if (down == true)
-//            {
-//                currentS1 = down_state;
-//                printf("This is the currentS1 val when down = true %d \n", currentS1);
-//                count1 = count1 + 1;
-//                printf("count1 %d \n",count1);
-//                down = false;
-//            }
-//            else{
-//                printf("currentS1 is up stae and down is true\n");
-//                //down = false;
-//            }
-//        }
-//        else
-//        {
-//            //downstate
-//            currentS1 = down_state;    //S1 State
-//            if(down == false)
-//            {
-//                currentS1 = up_state;
-//            }
-//        }
 
 
          // TODO: If a completed, debounced button press has occurred, increment count1.
-//         if(pressed)
+        if(pressed)
+            count1 = count1 + 1;
+//         if((checkStatus_BoosterpackS1() == pressed) && count1 < 8)
 //         {
 //             count1++;
+//             printf("this is the timer)Exp counter0 val %d \n",count0);
+//             if(count1 == 8){
+//                 count1 = 0;
+//             }
 //         }
-         if((checkStatus_BoosterpackS1() == PRESSED) && count1 < 8)
-         {
-             count1++;
-             printf("this is the timer)Exp counter0 val %d \n",count0);
-             if(count1 == 8){
-                 count1 = 0;
-             }
-         }
-
+//
      }
+
  }
 
  void initBoard()
@@ -122,44 +96,46 @@
  // Since count is an unsigned integer, you can mask the value in some way.
  void changeLaunchpadLED2(unsigned int count0)
  {
-     switch(count0)
+
+
+     switch(count0 % 8)
      {
-     case 0:
-         turnOff_LaunchpadLED2Red();
+     case off:
+         turnOff_LaunchpadLED2Red();//no LEDs
          turnOff_LaunchpadLED2Green();
          turnOff_LaunchpadLED2Blue();
          break;
-     case 1:
-         turnOn_LaunchpadLED2Red();
+     case two:
+         turnOn_LaunchpadLED2Red();//only Red
          turnOff_LaunchpadLED2Green();
          turnOff_LaunchpadLED2Blue();
          break;
-     case 2:
-         turnOn_LaunchpadLED2Green();
+     case three:
+         turnOn_LaunchpadLED2Green();//only Green
          turnOff_LaunchpadLED2Red();
          turnOff_LaunchpadLED2Blue();
          break;
-     case 3:
+     case four:
          turnOn_LaunchpadLED2Red();//Red and Green on = Yellow
          turnOn_LaunchpadLED2Green();
          turnOff_LaunchpadLED2Blue();
          break;
-     case 4:
-         turnOn_LaunchpadLED2Blue();
+     case five:
+         turnOn_LaunchpadLED2Blue();//Only Blue
          turnOff_LaunchpadLED2Red();
          turnOff_LaunchpadLED2Green();
          break;
-     case 5:
+     case six:
          turnOn_LaunchpadLED2Red();// Red and Blue on = pink
          turnOn_LaunchpadLED2Blue();
          turnOff_LaunchpadLED2Green();
          break;
-     case 6:
+     case seven:
          turnOn_LaunchpadLED2Green();// Green and Blue on = Cyan
          turnOn_LaunchpadLED2Blue();
          turnOff_LaunchpadLED2Red();
          break;
-     case 7:
+     case eight:
          turnOn_LaunchpadLED2Red();// Red and Blue on = pink
          turnOn_LaunchpadLED2Blue();
          turnOn_LaunchpadLED2Green();
@@ -173,58 +149,59 @@
  // This is essentially a copy of the previous function, using a different LED
  void changeBoosterpackLED(unsigned int count1)
  {
-     switch(count1)
+
+     switch(count1 % 8)
          {
-         case 0:
+         case off:
          {
              turnOff_BoosterpackLEDRed();
              turnOff_BoosterpackLEDGreen();
              turnOff_BoosterpackLEDBlue();
              break;
          }
-         case 1:
+         case two:
          {
              turnOn_BoosterpackLEDRed();
              turnOff_BoosterpackLEDGreen();
              turnOff_BoosterpackLEDBlue();
              break;
          }
-         case 2:
+         case three:
          {
              turnOn_BoosterpackLEDGreen();
              turnOff_BoosterpackLEDRed();
              turnOff_BoosterpackLEDBlue();
              break;
          }
-         case 3:
+         case four:
          {
              turnOn_BoosterpackLEDRed();//Red and Green on = Yellow
              turnOn_BoosterpackLEDGreen();
              turnOff_BoosterpackLEDBlue();
              break;
          }
-         case 4:
+         case five:
          {
              turnOn_BoosterpackLEDBlue();
              turnOff_BoosterpackLEDRed();
              turnOff_BoosterpackLEDGreen();
              break;
          }
-         case 5:
+         case six:
          {
              turnOn_BoosterpackLEDRed();// Red and Blue on = pink
              turnOn_BoosterpackLEDBlue();
              turnOff_BoosterpackLEDGreen();
              break;
          }
-         case 6:
+         case seven:
          {
              turnOn_BoosterpackLEDGreen();// Green and Blue on = Cyan
              turnOn_BoosterpackLEDBlue();
              turnOff_BoosterpackLEDRed();
              break;
          }
-         case 7:
+         case eight:
          {
              turnOn_BoosterpackLEDRed();// Red and Blue on = pink
              turnOn_BoosterpackLEDBlue();
@@ -238,44 +215,41 @@
 
  // TODO: Create a button state machine.
  // The button state machine should return true or false to indicate a completed, debounced button press.
- bool fsmBoosterpackButtonS1(unsigned char buttonHistoryS1)
- {
-     bool pressed = false;
-//     if(buttonHistoryS1 == 0x00)
-//         pressed = true;
-//     return pressed;//switch case for up and down
-     static button_status currentState = up_state;
+bool fsmBoosterpackButtonS1(unsigned char buttonHistoryS1)
+{
+    bool pressed;
+    static button_status currentState = up_state;
 
-     switch(currentState)
-     {
-         case up_state:
-         {
-             if(buttonHistoryS1 & 0x00)
-             {
-                 pressed = true;
-                 currentState  = down_state;
-             }
-             else
-             {
-                 pressed = false;
-                 currentState = up_state;
-             }
-             break;
-         }
-         case down_state:
-             if(buttonHistoryS1 & 0xFF)
-             {
-                 pressed = false;
-                 currentState = down_state;
-             }
-             else
-             {
-                 pressed = false;
-                 currentState = up_state;
-             }
-             break;
+    switch (currentState)
+    {
+    case up_state:
+    {
+        if (buttonHistoryS1 & BIT0)
+        {
+            pressed = true;
+            currentState = down_state;
+        }
+        else
+        {
+            pressed = false;
+            currentState = up_state;
+        }
+        break;
+    }
+    case down_state:
+        if (buttonHistoryS1 & BIT0)
+        {
+            pressed = false;
+            currentState = down_state;
+        }
+        else
+        {
+            pressed = false;
+            currentState = up_state;
+        }
+        break;
 
- }
-     return pressed;
- }
+    }
+    return pressed;
+}
 
